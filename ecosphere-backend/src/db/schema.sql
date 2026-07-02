@@ -37,3 +37,27 @@ CREATE TABLE employees (
 ALTER TABLE departments
   ADD CONSTRAINT fk_department_head FOREIGN KEY (head_employee_id) REFERENCES employees(id) ON DELETE SET NULL;
 
+-- ============================================================
+-- MASTER DATA
+-- ============================================================
+
+CREATE TABLE categories (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name        VARCHAR(100) NOT NULL,
+  type        VARCHAR(20) NOT NULL CHECK (type IN ('CSR_ACTIVITY','CHALLENGE')),
+  status      VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','INACTIVE')),
+  created_at  TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(name, type)
+);
+
+CREATE TABLE emission_factors (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name          VARCHAR(150) NOT NULL,
+  source_type   VARCHAR(30) NOT NULL CHECK (source_type IN ('PURCHASE','MANUFACTURING','EXPENSE','FLEET')),
+  unit          VARCHAR(30) NOT NULL,          -- e.g. kg, liter, kWh, km
+  co2_per_unit  NUMERIC(14,6) NOT NULL,         -- kg CO2e per unit
+  valid_from    DATE NOT NULL DEFAULT CURRENT_DATE,
+  valid_to      DATE,
+  status        VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','INACTIVE')),
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
