@@ -61,3 +61,20 @@ CREATE TABLE emission_factors (
   status        VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','INACTIVE')),
   created_at    TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE products (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name        VARCHAR(150) NOT NULL,
+  sku         VARCHAR(60) UNIQUE NOT NULL,
+  description TEXT,
+  created_at  TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE product_esg_profiles (
+  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  product_id          UUID REFERENCES products(id) ON DELETE CASCADE,
+  carbon_footprint    NUMERIC(14,4),
+  sustainability_score NUMERIC(5,2),
+  notes               TEXT,
+  created_at          TIMESTAMPTZ DEFAULT now()
+);
