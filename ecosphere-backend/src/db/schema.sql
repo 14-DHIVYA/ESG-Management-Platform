@@ -78,3 +78,27 @@ CREATE TABLE product_esg_profiles (
   notes               TEXT,
   created_at          TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE environmental_goals (
+  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  department_id  UUID REFERENCES departments(id) ON DELETE CASCADE,
+  title          VARCHAR(150) NOT NULL,
+  target_metric  VARCHAR(100) NOT NULL,  -- e.g. "CO2e Reduction"
+  target_value   NUMERIC(14,4) NOT NULL,
+  current_value  NUMERIC(14,4) DEFAULT 0,
+  unit           VARCHAR(30),
+  deadline       DATE,
+  status         VARCHAR(20) NOT NULL DEFAULT 'IN_PROGRESS' CHECK (status IN ('IN_PROGRESS','ACHIEVED','MISSED')),
+  created_at     TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE esg_policies (
+  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title          VARCHAR(150) NOT NULL,
+  description    TEXT,
+  category       VARCHAR(20) NOT NULL DEFAULT 'GOVERNANCE',
+  version        VARCHAR(20) NOT NULL DEFAULT '1.0',
+  effective_date DATE NOT NULL DEFAULT CURRENT_DATE,
+  status         VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','ARCHIVED')),
+  created_at     TIMESTAMPTZ DEFAULT now()
+);
