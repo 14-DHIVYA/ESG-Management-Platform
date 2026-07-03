@@ -102,3 +102,24 @@ CREATE TABLE esg_policies (
   status         VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','ARCHIVED')),
   created_at     TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE badges (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name         VARCHAR(100) NOT NULL,
+  description  TEXT,
+  unlock_rule  JSONB NOT NULL, -- e.g. {"metric":"xp","operator":">=","value":500}
+                                --      {"metric":"completed_challenges","operator":">=","value":5}
+  icon_url     VARCHAR(255),
+  status       VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','INACTIVE')),
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE rewards (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name            VARCHAR(150) NOT NULL,
+  description     TEXT,
+  points_required INT NOT NULL,
+  stock           INT NOT NULL DEFAULT 0,
+  status          VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','INACTIVE')),
+  created_at      TIMESTAMPTZ DEFAULT now()
+);
