@@ -153,3 +153,41 @@ CREATE TABLE csr_activities (
   status        VARCHAR(20) NOT NULL DEFAULT 'PLANNED' CHECK (status IN ('PLANNED','ONGOING','COMPLETED','CANCELLED')),
   created_at    TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE employee_participations (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  employee_id       UUID REFERENCES employees(id) ON DELETE CASCADE,
+  activity_id       UUID REFERENCES csr_activities(id) ON DELETE CASCADE,
+  proof_url         VARCHAR(255),
+  approval_status   VARCHAR(20) NOT NULL DEFAULT 'PENDING' CHECK (approval_status IN ('PENDING','APPROVED','REJECTED')),
+  points_earned     INT DEFAULT 0,
+  completion_date   DATE,
+  approved_by       UUID REFERENCES employees(id),
+  created_at        TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(employee_id, activity_id)
+);
+
+CREATE TABLE challenges (
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title              VARCHAR(150) NOT NULL,
+  category_id        UUID REFERENCES categories(id),
+  description        TEXT,
+  xp                 INT NOT NULL DEFAULT 0,
+  difficulty         VARCHAR(20) NOT NULL DEFAULT 'EASY' CHECK (difficulty IN ('EASY','MEDIUM','HARD')),
+  evidence_required  BOOLEAN NOT NULL DEFAULT false,
+  deadline           DATE,
+  status             VARCHAR(20) NOT NULL DEFAULT 'DRAFT' CHECK (status IN ('DRAFT','ACTIVE','UNDER_REVIEW','COMPLETED','ARCHIVED')),
+  created_at         TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE challenge_participations (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  challenge_id    UUID REFERENCES challenges(id) ON DELETE CASCADE,
+  employee_id     UUID REFERENCES employees(id) ON DELETE CASCADE,
+  progress        INT NOT NULL DEFAULT 0 CHECK (progress BETWEEN 0 AND 100),
+  proof_url       VARCHAR(255),
+  approval_status VARCHAR(20) NOT NULL DEFAULT 'PENDING' CHECK (approval_status IN ('PENDING','APPROVED','REJECTED')),
+  xp_awarded      INT DEFAULT 0,
+  created_at      TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(challenge_id, employee_id)
+);
