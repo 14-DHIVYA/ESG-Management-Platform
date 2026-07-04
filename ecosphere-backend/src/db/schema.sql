@@ -123,3 +123,33 @@ CREATE TABLE rewards (
   status          VARCHAR(20) NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE','INACTIVE')),
   created_at      TIMESTAMPTZ DEFAULT now()
 );
+
+-- ============================================================
+-- TRANSACTIONAL DATA
+-- ============================================================
+
+CREATE TABLE carbon_transactions (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  department_id     UUID REFERENCES departments(id) ON DELETE CASCADE,
+  source_type       VARCHAR(30) NOT NULL CHECK (source_type IN ('PURCHASE','MANUFACTURING','EXPENSE','FLEET')),
+  source_reference_id UUID, -- points to originating ERP record (external/simulated)
+  emission_factor_id UUID REFERENCES emission_factors(id),
+  quantity          NUMERIC(14,4) NOT NULL,
+  co2_equivalent    NUMERIC(14,4) NOT NULL, -- quantity * emission_factor.co2_per_unit
+  transaction_date  DATE NOT NULL DEFAULT CURRENT_DATE,
+  auto_calculated   BOOLEAN NOT NULL DEFAULT false,
+  created_by        UUID REFERENCES employees(id),
+  created_at        TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE csr_activities (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title         VARCHAR(150) NOT NULL,
+  category_id   UUID REFERENCES categories(id),
+  department_id UUID REFERENCES departments(id),
+  description   TEXT,
+  start_date    DATE,
+  end_date      DATE,
+  status        VARCHAR(20) NOT NULL DEFAULT 'PLANNED' CHECK (status IN ('PLANNED','ONGOING','COMPLETED','CANCELLED')),
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
