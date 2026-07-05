@@ -191,3 +191,34 @@ CREATE TABLE challenge_participations (
   created_at      TIMESTAMPTZ DEFAULT now(),
   UNIQUE(challenge_id, employee_id)
 );
+
+CREATE TABLE policy_acknowledgements (
+  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  policy_id      UUID REFERENCES esg_policies(id) ON DELETE CASCADE,
+  employee_id    UUID REFERENCES employees(id) ON DELETE CASCADE,
+  acknowledged_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(policy_id, employee_id)
+);
+
+CREATE TABLE audits (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title         VARCHAR(150) NOT NULL,
+  department_id UUID REFERENCES departments(id),
+  audit_date    DATE NOT NULL DEFAULT CURRENT_DATE,
+  auditor       VARCHAR(150),
+  scope         TEXT,
+  status        VARCHAR(20) NOT NULL DEFAULT 'PLANNED' CHECK (status IN ('PLANNED','IN_PROGRESS','COMPLETED')),
+  created_at    TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE compliance_issues (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  audit_id     UUID REFERENCES audits(id) ON DELETE CASCADE,
+  severity     VARCHAR(20) NOT NULL CHECK (severity IN ('LOW','MEDIUM','HIGH','CRITICAL')),
+  description  TEXT NOT NULL,
+  owner_id     UUID NOT NULL REFERENCES employees(id),
+  due_date     DATE NOT NULL,
+  status       VARCHAR(20) NOT NULL DEFAULT 'OPEN' CHECK (status IN ('OPEN','IN_PROGRESS','RESOLVED')),
+  flagged      BOOLEAN NOT NULL DEFAULT false, -- true when overdue & still open
+  created_at   TIMESTAMPTZ DEFAULT now()
+);
