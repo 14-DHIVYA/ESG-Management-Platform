@@ -222,3 +222,28 @@ CREATE TABLE compliance_issues (
   flagged      BOOLEAN NOT NULL DEFAULT false, -- true when overdue & still open
   created_at   TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE department_scores (
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  department_id      UUID REFERENCES departments(id) ON DELETE CASCADE,
+  environmental_score NUMERIC(5,2) DEFAULT 0,
+  social_score        NUMERIC(5,2) DEFAULT 0,
+  governance_score    NUMERIC(5,2) DEFAULT 0,
+  total_score          NUMERIC(5,2) DEFAULT 0,
+  period_start        DATE NOT NULL,
+  period_end          DATE NOT NULL,
+  created_at           TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(department_id, period_start, period_end)
+);
+
+CREATE TABLE diversity_metrics (
+  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  department_id  UUID REFERENCES departments(id) ON DELETE CASCADE,
+  period_start   DATE NOT NULL,
+  period_end     DATE NOT NULL,
+  gender_male    INT DEFAULT 0,
+  gender_female  INT DEFAULT 0,
+  gender_other   INT DEFAULT 0,
+  age_group_data JSONB,
+  created_at     TIMESTAMPTZ DEFAULT now()
+);
