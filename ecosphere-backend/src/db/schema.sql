@@ -293,3 +293,30 @@ CREATE TABLE notification_settings (
   email_enabled             BOOLEAN NOT NULL DEFAULT true,
   in_app_enabled            BOOLEAN NOT NULL DEFAULT true
 );
+
+-- ============================================================
+-- SYSTEM CONFIGURATION (Section 8 business rules)
+-- ============================================================
+
+CREATE TABLE esg_config (
+  id                          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  environmental_weight        NUMERIC(4,2) NOT NULL DEFAULT 0.40,
+  social_weight               NUMERIC(4,2) NOT NULL DEFAULT 0.30,
+  governance_weight           NUMERIC(4,2) NOT NULL DEFAULT 0.30,
+  auto_emission_calc_enabled  BOOLEAN NOT NULL DEFAULT true,
+  evidence_requirement_enabled BOOLEAN NOT NULL DEFAULT true,
+  badge_auto_award_enabled    BOOLEAN NOT NULL DEFAULT true,
+  updated_at                  TIMESTAMPTZ DEFAULT now()
+);
+
+-- ============================================================
+-- INDEXES
+-- ============================================================
+
+CREATE INDEX idx_carbon_tx_department ON carbon_transactions(department_id);
+CREATE INDEX idx_carbon_tx_date ON carbon_transactions(transaction_date);
+CREATE INDEX idx_participation_employee ON employee_participations(employee_id);
+CREATE INDEX idx_challenge_participation_employee ON challenge_participations(employee_id);
+CREATE INDEX idx_compliance_due ON compliance_issues(due_date, status);
+CREATE INDEX idx_department_scores_period ON department_scores(period_start, period_end);
+CREATE INDEX idx_notifications_employee ON notifications(employee_id, is_read);
