@@ -247,3 +247,49 @@ CREATE TABLE diversity_metrics (
   age_group_data JSONB,
   created_at     TIMESTAMPTZ DEFAULT now()
 );
+
+CREATE TABLE training_completions (
+  id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  employee_id    UUID REFERENCES employees(id) ON DELETE CASCADE,
+  training_name  VARCHAR(150) NOT NULL,
+  completed_date DATE,
+  status         VARCHAR(20) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING','COMPLETED','OVERDUE')),
+  created_at     TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE employee_badges (
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  employee_id  UUID REFERENCES employees(id) ON DELETE CASCADE,
+  badge_id     UUID REFERENCES badges(id) ON DELETE CASCADE,
+  awarded_at   TIMESTAMPTZ DEFAULT now(),
+  UNIQUE(employee_id, badge_id)
+);
+
+CREATE TABLE reward_redemptions (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  employee_id     UUID REFERENCES employees(id) ON DELETE CASCADE,
+  reward_id       UUID REFERENCES rewards(id),
+  points_deducted INT NOT NULL,
+  status          VARCHAR(20) NOT NULL DEFAULT 'CONFIRMED' CHECK (status IN ('CONFIRMED','CANCELLED')),
+  redeemed_at     TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE notifications (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  employee_id UUID REFERENCES employees(id) ON DELETE CASCADE,
+  type        VARCHAR(50) NOT NULL, -- COMPLIANCE_ISSUE, APPROVAL_DECISION, POLICY_REMINDER, BADGE_UNLOCK
+  message     TEXT NOT NULL,
+  is_read     BOOLEAN NOT NULL DEFAULT false,
+  created_at  TIMESTAMPTZ DEFAULT now()
+);
+
+CREATE TABLE notification_settings (
+  id                        UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  employee_id               UUID REFERENCES employees(id) ON DELETE CASCADE UNIQUE,
+  compliance_alerts         BOOLEAN NOT NULL DEFAULT true,
+  approval_decisions        BOOLEAN NOT NULL DEFAULT true,
+  policy_reminders          BOOLEAN NOT NULL DEFAULT true,
+  badge_unlocks             BOOLEAN NOT NULL DEFAULT true,
+  email_enabled             BOOLEAN NOT NULL DEFAULT true,
+  in_app_enabled            BOOLEAN NOT NULL DEFAULT true
+);
