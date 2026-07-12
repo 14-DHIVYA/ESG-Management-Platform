@@ -5,12 +5,7 @@
     &nbsp;EcoSphere — ESG Management Platform
   </h1>
 
-<<<<<<< HEAD
-  <!-- APP SCREENSHOT: replace this placeholder with a real screenshot or short GIF of the dashboard -->
-  <!-- <img src="assets/dashboard-preview.png" alt="EcoSphere Dashboard" width="800"> -->
-=======
-  <img src="eco-imge" alt="EcoSphere Dashboard" width="800">
->>>>>>> b9d3cf4 (docs: Add dashboard screenshot to README)
+  <img src="eco-imge/screenshot-1.png" alt="EcoSphere Dashboard" width="800">
 
   <p>
     <strong>A full-stack enterprise platform that turns corporate ESG (Environmental, Social, Governance) tracking from a compliance chore into a measurable, auditable, and gamified system.</strong>
@@ -63,11 +58,10 @@ EcoSphere was built to close both gaps in a single system: transactional ESG dat
 
 ## What EcoSphere Does
 
-<!-- FEATURE SCREENSHOTS: add 2-4 screenshots here, e.g. -->
-<!-- <p align="center">
-  <img src="assets/carbon-tracking.png" alt="Carbon Tracking" width="45%">
-  <img src="assets/gamification.png" alt="Gamification" width="45%">
-</p> -->
+<p align="center">
+  <img src="eco-imge/screenshot-2.png" alt="Carbon Tracking" width="45%">
+  <img src="eco-imge/screenshot-3.png" alt="Gamification" width="45%">
+</p>
 
 * **Carbon Transaction Ledger** — Departments log carbon-relevant activity (travel, energy use, waste), and the system computes CO₂-equivalent values against configurable emission factors rather than hardcoded conversions.
 * **Gamified Employee Engagement** — Employees join challenges (e.g. "Bike to Work Week"), earn badges through a rule-evaluation engine, accumulate XP, and redeem points for rewards.
@@ -202,11 +196,10 @@ Keeping this logic out of route handlers means a badge can be awarded from more 
 
 ## Frontend Engineering
 
-<!-- UI SCREENSHOTS: add screenshots of key screens here, e.g. -->
-<!-- <p align="center">
-  <img src="assets/login-screen.png" alt="Login" width="45%">
-  <img src="assets/scores-dashboard.png" alt="Department Scores" width="45%">
-</p> -->
+<p align="center">
+  <img src="eco-imge/screenshot-4.png" alt="Login" width="45%">
+  <img src="eco-imge/screenshot-5.png" alt="Department Scores" width="45%">
+</p>
 
 * **React 19 + TypeScript + Vite** — fast dev server, typed API surface.
 * **Centralized Axios client** (`api/client.ts`) — attaches the JWT from `localStorage` to every outgoing request via an interceptor, and on any `401` response, clears local session state and forces a redirect to login. This means individual components never handle auth failure themselves.
