@@ -5,8 +5,12 @@
     &nbsp;EcoSphere — ESG Management Platform
   </h1>
 
+<<<<<<< HEAD
   <!-- APP SCREENSHOT: replace this placeholder with a real screenshot or short GIF of the dashboard -->
   <!-- <img src="assets/dashboard-preview.png" alt="EcoSphere Dashboard" width="800"> -->
+=======
+  <img src="eco-imge" alt="EcoSphere Dashboard" width="800">
+>>>>>>> b9d3cf4 (docs: Add dashboard screenshot to README)
 
   <p>
     <strong>A full-stack enterprise platform that turns corporate ESG (Environmental, Social, Governance) tracking from a compliance chore into a measurable, auditable, and gamified system.</strong>
