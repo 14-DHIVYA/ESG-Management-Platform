@@ -1,6 +1,12 @@
 <div align="center">
 
-  <h1>🌍 EcoSphere — ESG Management Platform</h1>
+  <h1>
+    <img src="https://api.iconify.design/lucide/recycle.svg?color=%2322c55e&width=32&height=32" alt="" valign="middle" />
+    &nbsp;EcoSphere — ESG Management Platform
+  </h1>
+
+  <!-- APP SCREENSHOT: replace this placeholder with a real screenshot or short GIF of the dashboard -->
+  <!-- <img src="assets/dashboard-preview.png" alt="EcoSphere Dashboard" width="800"> -->
 
   <p>
     <strong>A full-stack enterprise platform that turns corporate ESG (Environmental, Social, Governance) tracking from a compliance chore into a measurable, auditable, and gamified system.</strong>
@@ -52,6 +58,12 @@ EcoSphere was built to close both gaps in a single system: transactional ESG dat
 ---
 
 ## What EcoSphere Does
+
+<!-- FEATURE SCREENSHOTS: add 2-4 screenshots here, e.g. -->
+<!-- <p align="center">
+  <img src="assets/carbon-tracking.png" alt="Carbon Tracking" width="45%">
+  <img src="assets/gamification.png" alt="Gamification" width="45%">
+</p> -->
 
 * **Carbon Transaction Ledger** — Departments log carbon-relevant activity (travel, energy use, waste), and the system computes CO₂-equivalent values against configurable emission factors rather than hardcoded conversions.
 * **Gamified Employee Engagement** — Employees join challenges (e.g. "Bike to Work Week"), earn badges through a rule-evaluation engine, accumulate XP, and redeem points for rewards.
@@ -138,6 +150,9 @@ flowchart TB
 
 ## Database Design
 
+<!-- ERD: add an entity-relationship diagram export here, e.g. -->
+<!-- <img src="assets/erd.png" alt="Database ERD" width="800"> -->
+
 The schema models ESG data as two linked domains sharing a common `departments`/`employees` core:
 
 **Compliance & Environmental domain:**
@@ -182,6 +197,12 @@ Keeping this logic out of route handlers means a badge can be awarded from more 
 ---
 
 ## Frontend Engineering
+
+<!-- UI SCREENSHOTS: add screenshots of key screens here, e.g. -->
+<!-- <p align="center">
+  <img src="assets/login-screen.png" alt="Login" width="45%">
+  <img src="assets/scores-dashboard.png" alt="Department Scores" width="45%">
+</p> -->
 
 * **React 19 + TypeScript + Vite** — fast dev server, typed API surface.
 * **Centralized Axios client** (`api/client.ts`) — attaches the JWT from `localStorage` to every outgoing request via an interceptor, and on any `401` response, clears local session state and forces a redirect to login. This means individual components never handle auth failure themselves.
